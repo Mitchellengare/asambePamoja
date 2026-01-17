@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "target": "esnext",
+
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["react", "react-dom", "next", "next/types/global"],
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
