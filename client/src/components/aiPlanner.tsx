@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useChat } from "@ai-sdk/react"
-import Image from "next/image"
+import  Image  from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"

@@ -1,23 +1,19 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "target": "esnext",
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
 
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["react", "react-dom", "next", "next/types/global"],
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
 
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    "types": ["vite/client", "react", "react-dom"],
 
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
     "skipLibCheck": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
 
     "baseUrl": ".",
     "paths": {
