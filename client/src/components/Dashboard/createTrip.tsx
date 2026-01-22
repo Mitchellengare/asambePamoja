@@ -1,8 +1,6 @@
-"use client"
-
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Image from "next/image"
+import { useNavigate } from "react-router-dom"
+//import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -47,7 +45,7 @@ const suggestedDestinations = [
 ]
 
 export function CreateTripForm() {
-  const router = useRouter()
+  const navigate = useNavigate ()
   const [step, setStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [destinations, setDestinations] = useState<string[]>([])
@@ -82,7 +80,7 @@ export function CreateTripForm() {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500))
     setIsLoading(false)
-    router.push("/dashboard/trips")
+    navigate("/dashboard/trips")
   }
 
   return (
@@ -286,7 +284,7 @@ export function CreateTripForm() {
                       destinations.includes(dest.name) ? "ring-2 ring-primary" : ""
                     }`}
                   >
-                    <Image src={dest.image || "/placeholder.svg"} alt={dest.name} fill className="object-cover" />
+                    <img src={dest.image || "/placeholder.svg"} alt={dest.name} className="absolute inset-0 w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 to-transparent" />
                     <span className="absolute bottom-2 left-2 right-2 text-sm font-medium text-card text-left">
                       {dest.name}

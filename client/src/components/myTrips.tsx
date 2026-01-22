@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
+//import Image from "next/image"
+import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -190,20 +190,21 @@ export function MyTrips() {
                 key={trip.id}
                 className="bg-card rounded-2xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <Link href={`/trips/${trip.id}`}>
+                <Link to={`/trips/${trip.id}`}>
                   <div className="relative aspect-video">
-                    <Image
+                    <img
                       src={trip.image || "/placeholder.svg"}
                       alt={trip.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+
                     />
                     <Badge className={`absolute top-4 left-4 ${getStatusColor(trip.status)}`}>{trip.status}</Badge>
                   </div>
                 </Link>
                 <div className="p-5">
                   <div className="flex items-start justify-between">
-                    <Link href={`/trips/${trip.id}`}>
+                    <Link to={`/trips/${trip.id}`}>
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
                         {trip.title}
                       </h3>
@@ -269,7 +270,7 @@ export function MyTrips() {
                         )}
                       </div>
                     </div>
-                    <Link href={`/trips/${trip.id}`}>
+                    <Link to={`/trips/${trip.id}`}>
                       <Button variant="outline" size="sm">
                         View Details
                       </Button>

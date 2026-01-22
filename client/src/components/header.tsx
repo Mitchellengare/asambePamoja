@@ -1,6 +1,4 @@
-"use client"
-
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,28 +13,28 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
               <Compass className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">Wanderly</span>
+            <span className="text-xl font-bold text-foreground">AsambePamoja</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link href="/discover">
+            <Link to="/discover">
               <Button variant="ghost" className="gap-2">
                 <Map className="w-4 h-4" />
                 Discover
               </Button>
             </Link>
-            <Link href="/trips">
+            <Link to="/trips">
               <Button variant="ghost" className="gap-2">
                 <Users className="w-4 h-4" />
                 My Trips
               </Button>
             </Link>
-            <Link href="/ai-planner">
+            <Link to="/ai-planner">
               <Button variant="ghost" className="gap-2">
                 <Sparkles className="w-4 h-4" />
                 AI Planner
@@ -60,12 +58,12 @@ export function Header() {
                 </Button>
               )}
             </div>
-            <Link href="/profile">
+            <Link to="/profile">
               <Button variant="outline" size="icon">
                 <User className="w-4 h-4" />
               </Button>
             </Link>
-            <Link href="/auth">
+            <Link to="/auth">
               <Button>Sign In</Button>
             </Link>
           </div>
@@ -81,31 +79,31 @@ export function Header() {
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-2">
               <Input placeholder="Search destinations..." className="mb-2" />
-              <Link href="/discover">
+              <Link to="/discover">
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <Map className="w-4 h-4" />
                   Discover
                 </Button>
               </Link>
-              <Link href="/trips">
+              <Link to="/trips">
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <Users className="w-4 h-4" />
                   My Trips
                 </Button>
               </Link>
-              <Link href="/ai-planner">
+              <Link to="/ai-planner">
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <Sparkles className="w-4 h-4" />
                   AI Planner
                 </Button>
               </Link>
-              <Link href="/profile">
+              <Link to="/profile">
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <User className="w-4 h-4" />
                   Profile
                 </Button>
               </Link>
-              <Link href="/auth">
+              <Link to="/auth">
                 <Button className="w-full mt-2">Sign In</Button>
               </Link>
             </div>

@@ -1,5 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
+//import Image from "next/image"
+import { Link } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -56,7 +56,7 @@ export function TrendingTrips() {
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Trending Trips</h2>
             <p className="mt-2 text-muted-foreground">Get inspired by trips planned by our community</p>
           </div>
-          <Link href="/trips/explore">
+          <Link to="/trips/explore">
             <Button variant="outline" className="gap-2 bg-transparent">
               Explore All
               <ArrowRight className="w-4 h-4" />
@@ -66,14 +66,14 @@ export function TrendingTrips() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {trendingTrips.map((trip) => (
-            <Link key={trip.id} href={`/trip/${trip.id}`} className="group">
+            <Link key={trip.id} to={`/trip/${trip.id}`} className="group">
               <div className="bg-card rounded-2xl overflow-hidden border border-border transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div className="relative aspect-video">
-                  <Image
+                  <img
                     src={trip.image || "/placeholder.svg"}
                     alt={trip.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">

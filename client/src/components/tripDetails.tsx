@@ -1,21 +1,14 @@
-"use client"
+//"use client"
 
 import { useState } from "react"
-import Image from "next/image"
+//import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,DialogTrigger, } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -235,7 +228,7 @@ export function TripDetail({ tripId }: TripDetailProps) {
     <div className="min-h-screen bg-background">
       {/* Hero */}
       <div className="relative h-64 sm:h-80 lg:h-96">
-        <Image src={tripData.image || "/placeholder.svg"} alt={tripData.title} fill className="object-cover" />
+        <img src={tripData.image || "/placeholder.svg"} alt={tripData.title} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 max-w-7xl mx-auto">
           <Badge className="mb-3 bg-accent text-accent-foreground">Upcoming Trip</Badge>

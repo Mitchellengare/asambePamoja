@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link"
-import Image from "next/image"
+import { Link } from "react-router-dom"
+// import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -91,13 +91,13 @@ export function DashboardOverview() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" asChild>
-            <Link href="/dashboard/ai-planner">
+            <Link to="/dashboard/ai-planner">
               <Sparkles className="mr-2 h-4 w-4" />
               AI Suggestions
             </Link>
           </Button>
           <Button asChild>
-            <Link href="/dashboard/trips/new">
+            <Link to="/dashboard/trips/new">
               <Plus className="mr-2 h-4 w-4" />
               New Trip
             </Link>
@@ -130,7 +130,7 @@ export function DashboardOverview() {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-foreground">Upcoming Trips</h2>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/dashboard/trips">
+              <Link to="/dashboard/trips">
                 View all
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
@@ -141,12 +141,12 @@ export function DashboardOverview() {
               <Card key={trip.id} className="overflow-hidden">
                 <div className="flex flex-col sm:flex-row">
                   <div className="relative w-full sm:w-48 h-32 sm:h-auto">
-                    <Image src={trip.image || "/placeholder.svg"} alt={trip.title} fill className="object-cover" />
+                    <img src={trip.image || "/placeholder.svg"} alt={trip.title} className="absolute inset-0 w-full h-full object-cover" />
                   </div>
                   <CardContent className="flex-1 p-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <Link href={`/dashboard/trips/${trip.id}`}>
+                        <Link to={`/dashboard/trips/${trip.id}`}>
                           <h3 className="font-semibold text-foreground hover:text-primary transition-colors">
                             {trip.title}
                           </h3>
@@ -214,7 +214,7 @@ export function DashboardOverview() {
                 </div>
               ))}
               <Button variant="ghost" size="sm" className="w-full" asChild>
-                <Link href="/dashboard/ai-planner">
+                <Link to="/dashboard/ai-planner">
                   Get more suggestions
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>

@@ -1,5 +1,5 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { TripDetail } from "@/components/trip-detail"
+import { DashboardHeader } from "@/components/dashboard/dashboardHeader"
+import { TripDetail } from "@/components/tripDetail"
 
 export default async function TripDetailPage({
   params,

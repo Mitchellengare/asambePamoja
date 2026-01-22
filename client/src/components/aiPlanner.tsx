@@ -1,10 +1,6 @@
-"use client"
-
-import type React from "react"
-
 import { useState } from "react"
-import { useChat } from "@ai-sdk/react"
-import  Image  from "next/image"
+import type { ChangeEvent, FormEvent } from "react"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -30,6 +26,8 @@ import {
   RefreshCw,
   Plus,
 } from "lucide-react"
+
+
 
 const travelStyles = [
   { id: "adventure", icon: Mountain, label: "Adventure" },
@@ -71,67 +69,103 @@ export function AiPlanner() {
   const [travelers, setTravelers] = useState(2)
   const [recommendations, setRecommendations] = useState<Recommendation[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
-
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: "/api/ai-chat",
-    onFinish: () => {
-      // Parse recommendations from the AI response
+  const [notes, setNotes] = useState("")
+  const makeId = () => `${Date.now()}-${Math.random()}`
+  const [messages, setMessages] = useState<{ id: string; role: "user" | "assistant"; content: string }[]>([])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value)
+  }
+  const navigate = useNavigate()
+  
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (!input.trim()) return
+  
+    setMessages((prev) => [
+      ...prev,
+      { id: makeId(), role: "user", content: input },
+    ])
+  
+    const userMessage = input
+    setInput("")
+    setIsLoading(true)
+  
+    // simulate AI response (until you add a real backend)
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: makeId(),
+          role: "assistant",
+          content: `Got it — planning around: "${userMessage}"`,
+        },
+      ])
       generateRecommendations()
-    },
-  })
+      setIsLoading(false)
+    }, 600)
+  }
+  
+  
 
   const toggleStyle = (styleId: string) => {
     setSelectedStyles((prev) => (prev.includes(styleId) ? prev.filter((s) => s !== styleId) : [...prev, styleId]))
   }
-
   const generateRecommendations = () => {
-    // Simulated recommendations based on preferences
+    const prefs = {
+      styles: selectedStyles,
+      budget: budget[0],
+      days: duration[0],
+      travelers,
+      notes,
+    }
+  
     const mockRecommendations: Recommendation[] = [
       {
         id: "1",
         type: "destination",
         title: "Kyoto, Japan",
-        description:
-          "A perfect blend of ancient traditions and serene landscapes. Explore historic temples, bamboo groves, and traditional tea houses.",
+        description: `Great for ${prefs.styles.includes("cultural") ? "culture lovers" : "a balanced trip"} — temples, food, and nature.`,
         image: "/kyoto-japan-bamboo-forest.jpg",
         details: {
-          duration: "5-7 days",
-          budget: "$1,500 - $2,500",
-          bestTime: "March-May, October-November",
-          highlights: ["Fushimi Inari Shrine", "Arashiyama Bamboo Grove", "Gion District", "Traditional Ryokans"],
+          duration: `${Math.min(7, prefs.days)} days`,
+          budget: `$${prefs.budget.toLocaleString()} (est.)`,
+          bestTime: "March–May, Oct–Nov",
+          highlights: ["Fushimi Inari", "Arashiyama", "Gion"],
         },
       },
       {
         id: "2",
         type: "destination",
         title: "Lisbon, Portugal",
-        description:
-          "A vibrant city with stunning architecture, delicious cuisine, and a rich maritime history. Perfect for culture lovers and foodies alike.",
+        description: `Perfect for food + city vibes. Notes: ${prefs.notes ? "taken into account" : "add notes for more personalization"}.`,
         image: "/lisbon-portugal-colorful-streets.jpg",
         details: {
-          duration: "4-6 days",
-          budget: "$1,200 - $1,800",
-          bestTime: "April-June, September-October",
-          highlights: ["Belém Tower", "Alfama District", "Pastéis de Belém", "Sintra Day Trip"],
+          duration: `${Math.min(6, prefs.days)} days`,
+          budget: `$${Math.max(1200, Math.min(2500, prefs.budget)).toLocaleString()} (est.)`,
+          bestTime: "Apr–Jun, Sep–Oct",
+          highlights: ["Alfama", "Belém", "Sintra"],
         },
       },
       {
         id: "3",
         type: "destination",
         title: "Costa Rica",
-        description:
-          "An eco-paradise with rainforests, volcanoes, and pristine beaches. Ideal for adventure seekers and nature enthusiasts.",
+        description: `Best if you picked Adventure/Family — rainforests, beaches, and wildlife.`,
         image: "/costa-rica-rainforest-waterfall.jpg",
         details: {
-          duration: "7-10 days",
-          budget: "$1,800 - $2,800",
-          bestTime: "December-April",
-          highlights: ["Arenal Volcano", "Manuel Antonio", "Monteverde Cloud Forest", "Zip-lining"],
+          duration: `${Math.min(10, prefs.days)} days`,
+          budget: `$${Math.max(1800, Math.min(3500, prefs.budget)).toLocaleString()} (est.)`,
+          bestTime: "Dec–Apr",
+          highlights: ["Arenal", "Monteverde", "Zip-lining"],
         },
       },
     ]
+  
     setRecommendations(mockRecommendations)
   }
+  
 
   const handleStartPlanning = () => {
     setIsGenerating(true)
@@ -142,6 +176,10 @@ export function AiPlanner() {
       setStep("results")
     }, 2000)
   }
+  const selectedStyleLabels = selectedStyles
+    .map((id) => travelStyles.find((s) => s.id === id)?.label)
+    .filter(Boolean)
+    .join(", ")
 
   return (
     <div className="min-h-screen bg-background">
@@ -300,10 +338,13 @@ export function AiPlanner() {
                 <CardDescription>Tell us more about what you are looking for</CardDescription>
               </CardHeader>
               <CardContent>
-                <Textarea
-                  placeholder="e.g., I love hiking and local food. I'd prefer to avoid crowded tourist spots..."
-                  className="min-h-[100px]"
-                />
+              <Textarea
+  value={notes}
+  onChange={(e) => setNotes(e.target.value)}
+  placeholder="e.g., I love hiking and local food. I'd prefer to avoid crowded tourist spots..."
+  className="min-h-[100px]"
+/>
+
               </CardContent>
             </Card>
 
@@ -347,12 +388,7 @@ export function AiPlanner() {
                           variant="outline"
                           size="sm"
                           className="text-left h-auto py-2 px-3 bg-transparent"
-                          onClick={() => {
-                            const syntheticEvent = {
-                              target: { value: prompt },
-                            } as React.ChangeEvent<HTMLInputElement>
-                            handleInputChange(syntheticEvent)
-                          }}
+                          onClick={() => setInput(prompt)}
                         >
                           {prompt}
                         </Button>
@@ -417,7 +453,8 @@ export function AiPlanner() {
               <div>
                 <h2 className="text-2xl font-bold text-foreground">Your Personalized Recommendations</h2>
                 <p className="text-muted-foreground mt-1">
-                  Based on your preferences: {selectedStyles.join(", ")} • ${budget[0]} budget • {duration[0]} days
+                Based on your preferences: {selectedStyleLabels || "—"} • ${budget[0]} budget • {duration[0]} days
+
                 </p>
               </div>
               <div className="flex gap-2">
@@ -437,12 +474,11 @@ export function AiPlanner() {
               {recommendations.map((rec, idx) => (
                 <Card key={rec.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
                   <div className="relative aspect-video">
-                    <Image
+                    <img
                       src={rec.image || "/placeholder.svg"}
                       alt={rec.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                     />
                     <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">#{idx + 1} Match</Badge>
                   </div>
                   <CardHeader>
@@ -479,14 +515,19 @@ export function AiPlanner() {
                           </div>
                         </div>
                         <div className="flex gap-2 pt-2">
-                          <Button className="flex-1 gap-2">
-                            <Plus className="w-4 h-4" />
-                            Create Trip
-                          </Button>
-                          <Button variant="outline" className="bg-transparent">
-                            Learn More
-                          </Button>
-                        </div>
+  <Button
+    className="flex-1 gap-2"
+    onClick={() => navigate("/dashboard/trips/new")}
+  >
+    <Plus className="w-4 h-4" />
+    Create Trip
+  </Button>
+
+  <Button variant="outline" className="bg-transparent">
+    Learn More
+  </Button>
+</div>
+
                       </div>
                     )}
                   </CardContent>

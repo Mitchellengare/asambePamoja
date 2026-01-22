@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -121,7 +121,7 @@ export function TripCalendar() {
                   <div className="flex items-start gap-3">
                     <div className={`w-3 h-3 rounded-full ${selectedTrip.color} mt-1.5`} />
                     <div className="flex-1">
-                      <Link href={`/dashboard/trips/${selectedTrip.id}`}>
+                      <Link to={`/dashboard/trips/${selectedTrip.id}`}>
                         <h4 className="font-semibold text-foreground hover:text-primary transition-colors">
                           {selectedTrip.title}
                         </h4>
@@ -146,14 +146,14 @@ export function TripCalendar() {
                     </div>
                   </div>
                   <Button className="w-full" asChild>
-                    <Link href={`/dashboard/trips/${selectedTrip.id}`}>View Trip Details</Link>
+                    <Link to={`/dashboard/trips/${selectedTrip.id}`}>View Trip Details</Link>
                   </Button>
                 </div>
               ) : (
                 <div className="text-center py-6">
                   <p className="text-muted-foreground text-sm">No trips scheduled for this date</p>
                   <Button variant="outline" className="mt-4 bg-transparent" asChild>
-                    <Link href="/dashboard/trips/new">Plan a Trip</Link>
+                    <Link to="/dashboard/trips/new">Plan a Trip</Link>
                   </Button>
                 </div>
               )}
@@ -169,7 +169,7 @@ export function TripCalendar() {
               {trips.map((trip) => (
                 <Link
                   key={trip.id}
-                  href={`/dashboard/trips/${trip.id}`}
+                  to={`/dashboard/trips/${trip.id}`}
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary transition-colors"
                 >
                   <div className={`w-3 h-3 rounded-full ${trip.color}`} />

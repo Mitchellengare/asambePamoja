@@ -1,8 +1,5 @@
-"use client"
-
 import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Heart, Star, ArrowRight } from "lucide-react"
@@ -85,7 +82,7 @@ export function DestinationGrid() {
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Discover Destinations</h2>
             <p className="mt-2 text-muted-foreground">Explore our handpicked selection of amazing places</p>
           </div>
-          <Link href="/discover">
+          <Link to="/discover">
             <Button variant="outline" className="gap-2 bg-transparent">
               View All
               <ArrowRight className="w-4 h-4" />
@@ -110,15 +107,13 @@ export function DestinationGrid() {
         {/* Destinations Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map((destination) => (
-            <Link key={destination.id} href={`/destination/${destination.id}`} className="group">
+            <Link key={destination.id} to={`/destination/${destination.id}`} className="group">
               <div className="bg-card rounded-2xl overflow-hidden border border-border transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div className="relative aspect-[4/3]">
-                  <Image
+                  <img
                     src={destination.image || "/placeholder.svg"}
                     alt={destination.name}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/>
                   <button
                     onClick={(e) => {
                       e.preventDefault()

@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
+//import Image from "next/image"
+import { Link } from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -149,7 +149,7 @@ export function DiscoverSection() {
                 className="flex gap-4 p-4 rounded-xl bg-card border border-border hover:shadow-md transition-all cursor-pointer group"
               >
                 <div className="relative w-24 h-24 rounded-lg overflow-hidden shrink-0">
-                  <Image src={rec.image || "/placeholder.svg"} alt={rec.title} fill className="object-cover" />
+                  <img src={rec.image || "/placeholder.svg"} alt={rec.title} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute top-1 right-1 bg-primary text-primary-foreground text-xs font-bold px-1.5 py-0.5 rounded">
                     {rec.matchScore}%
                   </div>
@@ -167,7 +167,7 @@ export function DiscoverSection() {
             ))}
           </div>
           <Button variant="ghost" className="w-full mt-4" asChild>
-            <Link href="/dashboard/ai-planner">
+            <Link to="/dashboard/ai-planner">
               Get More Personalized Recommendations
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -191,11 +191,10 @@ export function DiscoverSection() {
             {trendingDestinations.map((dest) => (
               <Card key={dest.id} className="overflow-hidden group">
                 <div className="relative aspect-[4/3]">
-                  <Image
+                  <img
                     src={dest.image || "/placeholder.svg"}
                     alt={dest.name}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
                   <button
@@ -251,7 +250,7 @@ export function DiscoverSection() {
             <div className="text-center py-12">
               <p className="text-muted-foreground">Explore {tab} destinations coming soon...</p>
               <Button variant="outline" className="mt-4 bg-transparent" asChild>
-                <Link href="/dashboard/ai-planner">
+                <Link to="/dashboard/ai-planner">
                   <Sparkles className="mr-2 h-4 w-4" />
                   Get AI Recommendations
                 </Link>

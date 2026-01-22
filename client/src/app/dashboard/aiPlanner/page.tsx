@@ -1,5 +1,5 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { AiPlanner } from "@/components/ai-planner"
+import { DashboardHeader } from "@/components/dashboard/dashboardHeader"
+import { AiPlanner } from "@/components/aiPlanner"
 
 export default function AiPlannerPage() {
   return (
