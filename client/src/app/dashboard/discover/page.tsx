@@ -1,5 +1,5 @@
-import { DashboardHeader } from "../components/dashboard/dashboardHeader"
-import { DiscoverSection } from "../components/dashboard/discoverSection"
+import { DashboardHeader } from "../../../components/Dashboard/dashboardHeader"
+import { DiscoverSection } from "../../../components/Dashboard/discoverSection"
 
 export default function DiscoverPage() {
   return (

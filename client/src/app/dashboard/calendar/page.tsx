@@ -1,5 +1,5 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { TripCalendar } from "@/components/dashboard/trip-calendar"
+import { DashboardHeader } from "../../../components/Dashboard/dashboardHeader"
+import { TripCalendar } from "../../../components/Dashboard/tripCalendar"
 
 export default function CalendarPage() {
   return (
