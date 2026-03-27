@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, NavLink, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
 import Explore from "./pages/Explore";
 import CreateTrip from "./pages/CreateTrip";
 import TripDetail from "./pages/TripDetail";
@@ -29,20 +29,29 @@ function Nav() {
   );
 }
 
+function Layout() {
+  const location = useLocation();
+  const hideNav = location.pathname === "/";
+
+  return (
+    <div className="app">
+      {!hideNav && <Nav />}
+
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/create" element={<CreateTrip />} />
+        <Route path="/trips/:id" element={<TripDetail />} />
+        <Route path="/bucket" element={<BucketList />} />
+        <Route path="/reviews" element={<Reviews />} />
+      </Routes>
+    </div>
+  );
+}
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="app"> 
-        {location.pathname !== "/" && <Nav />}
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/create" element={<CreateTrip />} />
-          <Route path="/trips/:id" element={<TripDetail />} />
-          <Route path="/bucket" element={<BucketList />} />
-          <Route path="/reviews" element={<Reviews />} />
-        </Routes>
-      </div>
+     <BrowserRouter>
+      <Layout />
     </BrowserRouter>
   );
 }

@@ -132,7 +132,7 @@ const LandingPage = () => {
   useEffect(() => {
   const timer = setTimeout(() => {
     navigate("/explore");
-  }, 7000); // 10 seconds
+  }, 7000); 
 
   return () => clearTimeout(timer);
 }, [navigate]);
