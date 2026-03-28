@@ -13,21 +13,42 @@ export default function CreateTrip() {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const today = new Date().toISOString().split("T")[0];
+  
 
   const toggleTag = (tag) => setTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
 
   const handleSubmit = async () => {
-    if (!form.title || !form.destination) { setError("Please fill in a name and destination."); return; }
-    setLoading(true); setError("");
-    try {
-      const trip = await createTrip({ ...form, emoji, tags: tags.map(t => t.toLowerCase()), creator_id: CURRENT_USER.id });
-      navigate(`/trips/${trip.id}`);
-    } catch (e) {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!form.title || !form.destination) {
+    setError("Please fill in a name and destination.");
+    return;
+  }
+
+  if (!form.start_date || !form.end_date) {
+    setError("Please select both start and end dates.");
+    return;
+  }
+
+  if (form.end_date < form.start_date) {
+    setError("End date cannot be before start date.");
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+
+  try {
+    const trip = await createTrip({
+      ...form,
+      emoji,
+      tags: tags.map(t => t.toLowerCase()),
+      creator_id: CURRENT_USER.id
+    });
+
+    navigate(`/trips/${trip.id}`);
+  } catch (e) {
+  setError(e.message || "Something went wrong. Please try again.");}
+};
 
   return (
     <div className="page" style={{ maxWidth: 640 }}>
@@ -49,12 +70,11 @@ export default function CreateTrip() {
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">Start date</label>
-            <input className="form-input" type="date" value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))} />
-          </div>
+            <input className="form-input" type="date" min={today} value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))} />
+            </div>
           <div className="form-group">
             <label className="form-label">End date</label>
-            <input className="form-input" type="date" value={form.end_date} onChange={e => setForm(f => ({ ...f, end_date: e.target.value }))} />
-          </div>
+            <input className="form-input" type="date" min={form.start_date || today} value={form.end_date} onChange={e => setForm(f => ({ ...f, end_date: e.target.value }))} /></div>
         </div>
 
         <div className="form-group">

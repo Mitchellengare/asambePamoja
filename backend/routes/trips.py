@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app import db
 from models.models import Trip, User, trip_members
+from datetime import date
 
 trips_bp = Blueprint("trips", __name__)
 
@@ -41,27 +42,40 @@ def get_trip(trip_id):
 
 
 @trips_bp.route("/", methods=["POST"])
+@trips_bp.route("/", methods=["POST"])
 def create_trip():
     data = request.get_json()
     required = ["title", "destination", "creator_id"]
-    if not all(k in data for k in required):
+    if not data or not all(k in data for k in required):
         return jsonify({"error": "Missing required fields"}), 400
+
+    start_date = data.get("start_date")
+    end_date = data.get("end_date")
+
+    try:
+        start_date = date.fromisoformat(start_date) if start_date else None
+        end_date = date.fromisoformat(end_date) if end_date else None
+    except ValueError:
+        return jsonify({"error": "Invalid date format"}), 400
+
+    if start_date and end_date and end_date < start_date:
+        return jsonify({"error": "End date cannot be before start date"}), 400
 
     trip = Trip(
         title=data["title"],
         destination=data["destination"],
         description=data.get("description", ""),
         emoji=data.get("emoji", "🌍"),
-        start_date=data.get("start_date"),
-        end_date=data.get("end_date"),
+        start_date=start_date,
+        end_date=end_date,
         tags=",".join(data.get("tags", [])),
         visibility=data.get("visibility", "open"),
         creator_id=data["creator_id"],
     )
+
     db.session.add(trip)
     db.session.flush()
 
-    # Creator auto-joins
     creator = User.query.get(data["creator_id"])
     if creator:
         trip.members.append(creator)
