@@ -5,6 +5,8 @@ import TripDetail from "./pages/TripDetail";
 import BucketList from "./pages/BucketList";
 import Reviews from "./pages/Reviews";
 import LandingPage from "./pages/LandingPage"
+// import PendingTrips from "./pages/PendingTrips"
+// import Friends from "./pages/Friends"
 import "./App.css";
 
 // Mock logged-in user — replace with real auth
@@ -18,6 +20,9 @@ function Nav() {
         <NavLink to="/explore" end className={({ isActive }) => isActive ? "nav-btn active" : "nav-btn"}>Explore</NavLink>
         <NavLink to="/bucket" className={({ isActive }) => isActive ? "nav-btn active" : "nav-btn"}>Bucket list</NavLink>
         <NavLink to="/reviews" className={({ isActive }) => isActive ? "nav-btn active" : "nav-btn"}>Reviews</NavLink>
+      {/* <NavLink to="/pendingTrips" className={({ isActive }) => isActive ? "nav-btn active" : "nav-btn"}>Pending Trips</NavLink>
+      <NavLink to="/friends" className={({ isActive }) => isActive ? "nav-btn active" : "nav-btn"}>Friends</NavLink> */}
+
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <NavLink to="/create" className="nav-btn cta">+ New trip</NavLink>
