@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5000/api";
+const BASE = "http://localhost:5001/api";
 
 async function req(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
@@ -6,9 +6,10 @@ async function req(path, options = {}) {
     ...options,
   });
   if (!res.ok) {
-  const data = await res.json().catch(() => null);
-  throw new Error(data?.error || `API error ${res.status}`);
-}
+    const data = await res.json().catch(() => null);
+    throw new Error(data?.error || `API error ${res.status}`);
+  }
+  return res.json();
 }
 
 // Trips

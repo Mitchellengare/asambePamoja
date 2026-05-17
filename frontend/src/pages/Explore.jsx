@@ -4,7 +4,14 @@ import { getTrendingTrips, getUserSuggestions, addToBucket } from "../services/a
 import { CURRENT_USER } from "../App";
 
 const TAGS = ["All", "Africa", "Europe", "Asia", "Americas", "Beach", "Culture"];
-const BG_MAP = { beach: "#E1F5EE", culture: "#EEEDFE", africa: "#FAECE7", europe: "#E6F1FB", asia: "#EAF3DE", americas: "#FAEEDA" };
+const BG_MAP = {
+  beach: "#E1F5EE",
+  culture: "#EEEDFE",
+  africa: "#FAECE7",
+  europe: "#E6F1FB",
+  asia: "#EAF3DE",
+  americas: "#FAEEDA"
+};
 
 function TripCard({ trip, onBucket }) {
   const bg = trip.tags?.[0] ? BG_MAP[trip.tags[0]] || "#F1EFE8" : "#F1EFE8";
@@ -39,8 +46,13 @@ export default function Explore() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTrendingTrips().then(setTrips).finally(() => setLoading(false));
-    getUserSuggestions(CURRENT_USER.id).then(setSuggestions).catch(() => {});
+    getTrendingTrips()
+      .then(data => setTrips(Array.isArray(data) ? data : []))
+      .catch(() => setTrips([]))
+      .finally(() => setLoading(false));
+    getUserSuggestions(CURRENT_USER.id)
+      .then(data => setSuggestions(Array.isArray(data) ? data : []))
+      .catch(() => setSuggestions([]));
   }, []);
 
   const filtered = activeTag === "All"
@@ -57,21 +69,15 @@ export default function Explore() {
     <>
       <div className="hero">
         <div className="hero-eyebrow">Travel together</div>
-        <h1>Plan trips. Build<br /><em>memories</em> together.</h1>
-        <p>Create trips, invite friends, discover destinations, and review each other's adventures.</p>
+        <h1>Discover trips.<br />Travel <em>together</em>.</h1>
+        <p>Join open trips, plan with friends, and find your next adventure.</p>
         <div className="hero-btns">
-          <Link to="/create" className="btn-primary">Plan your next trip</Link>
+          <Link to="/create" className="btn-primary">+ New trip</Link>
           <Link to="/bucket" className="btn-outline">My bucket list</Link>
         </div>
       </div>
 
       <div className="page">
-        <div className="stats-row">
-          <div className="stat-card"><div className="stat-label">Active trips</div><div className="stat-val">{trips.length}</div></div>
-          <div className="stat-card"><div className="stat-label">Open to join</div><div className="stat-val">{trips.filter(t => t.visibility === "open").length}</div></div>
-          <div className="stat-card"><div className="stat-label">Destinations</div><div className="stat-val">{new Set(trips.map(t => t.destination)).size}</div></div>
-        </div>
-
         {suggestions.length > 0 && (
           <div className="suggestion-banner">
             <div style={{ fontSize: 24 }}>✨</div>
@@ -79,7 +85,13 @@ export default function Explore() {
               <strong>Suggested for you — {suggestions[0].destination}</strong>
               <span>{suggestions[0].reason || "Based on your interests and location"}</span>
             </div>
-            <Link to={`/trips/${suggestions[0].id}`} className="btn-primary" style={{ fontSize: 13, padding: "7px 14px", flexShrink: 0 }}>Explore</Link>
+            <Link
+              to={`/trips/${suggestions[0].id}`}
+              className="btn-primary"
+              style={{ fontSize: 13, padding: "7px 14px", flexShrink: 0 }}
+            >
+              Explore
+            </Link>
           </div>
         )}
 
@@ -89,7 +101,11 @@ export default function Explore() {
 
         <div className="tags-row">
           {TAGS.map(tag => (
-            <button key={tag} className={`tag ${activeTag === tag ? "active" : ""}`} onClick={() => setActiveTag(tag)}>
+            <button
+              key={tag}
+              className={`tag ${activeTag === tag ? "active" : ""}`}
+              onClick={() => setActiveTag(tag)}
+            >
               {tag}
             </button>
           ))}
@@ -98,10 +114,17 @@ export default function Explore() {
         {loading ? (
           <div className="loading">Loading trips...</div>
         ) : filtered.length === 0 ? (
-          <div className="empty">No trips found. <Link to="/create" style={{ color: "var(--brand)" }}>Create the first one!</Link></div>
+          <div className="empty">
+            No trips found.{" "}
+            <Link to="/create" style={{ color: "var(--brand)" }}>
+              Create the first one!
+            </Link>
+          </div>
         ) : (
           <div className="cards-grid">
-            {filtered.map(trip => <TripCard key={trip.id} trip={trip} onBucket={handleBucket} />)}
+            {filtered.map(trip => (
+              <TripCard key={trip.id} trip={trip} onBucket={handleBucket} />
+            ))}
           </div>
         )}
       </div>

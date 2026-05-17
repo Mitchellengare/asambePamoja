@@ -1,14 +1,11 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from extensions import db
 from config import Config
-
-db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-
     db.init_app(app)
     CORS(app, origins=["http://localhost:5173"])
 
@@ -29,4 +26,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)

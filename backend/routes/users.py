@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
-from app import db
+from extensions import db
 from models.models import User, Trip
 import anthropic
 import json
